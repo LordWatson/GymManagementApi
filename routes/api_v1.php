@@ -14,10 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::group(['prefix' => 'v1'], function () {
-    Route::post('/register', [\App\Http\Controllers\Api\V1\ApiAuthController::class, 'register']);
-    Route::post('/login', [\App\Http\Controllers\Api\V1\ApiAuthController::class, 'login']);
+    Route::post('/register', [\App\Http\Controllers\V1\ApiAuthController::class, 'register']);
+    Route::post('/login', [\App\Http\Controllers\V1\ApiAuthController::class, 'login']);
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
-        Route::post('/logout',[\App\Http\Controllers\Api\V1\ApiAuthController::class, 'logout']);
+        Route::post('/logout',[\App\Http\Controllers\V1\ApiAuthController::class, 'logout']);
+
+        Route::apiResource('users', \App\Http\Controllers\V1\UserController::class);
     });
 });

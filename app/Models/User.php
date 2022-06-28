@@ -41,4 +41,34 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Eager load roles
+    //protected $with = ['roles'];
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'user_roles');
+    }
+
+    public function isAdmin()
+    {
+        foreach ($this->roles()->get() as $role) {
+            if ($role->name == 'Admin') {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function is($roleName)
+    {
+        foreach ($this->roles()->get() as $role) {
+            if ($role->name == $roleName) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
