@@ -23,9 +23,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-
-        if($user->isAdmin())
+        if(Auth::user()->isAdmin())
         {
             return response(User::with('roles')->get(), 200);
         }
@@ -54,7 +52,7 @@ class UserController extends Controller
     {
         if(Auth::user()->isAdmin())
         {
-            return response($user->with('roles')->first(), 200);
+            return response($user, 200);
         }
 
         return response($user, 200);

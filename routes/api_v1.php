@@ -22,7 +22,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::apiResource('users', \App\Http\Controllers\V1\UserController::class);
 
-        Route::apiResource('roles', \App\Http\Controllers\V1\RoleController::class);
+        Route::apiResource('roles', \App\Http\Controllers\V1\RoleController::class)->middleware('is-admin');
+
+        Route::put('user-roles/{userId}', [\App\Http\Controllers\V1\UserRoleController::class, 'update']);
 
         Route::group(['prefix' => 'notifications'], function () {
             Route::get('unread', [\App\Http\Controllers\V1\NotificationController::class, 'unread']);
