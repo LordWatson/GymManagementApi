@@ -3,14 +3,13 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\StoreRoleRequest;
 use App\Models\Role;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class RoleController extends Controller
 {
-
     public function __construct()
     {
         //
@@ -27,7 +26,9 @@ class UserController extends Controller
 
         if($user->isAdmin())
         {
-            return response(User::with('roles')->get(), 200);
+            $roles = Role::all();
+
+            return response($roles, 200);
         }
 
         return response('Permission Denied', 403);
@@ -39,9 +40,19 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        // Create Role
+        $user = Role::create(
+            $request->validated(),
+            [
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+
+        return response($user, 201);
     }
 
     /**
@@ -50,14 +61,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($id)
     {
-        if(Auth::user()->isAdmin())
-        {
-            return response($user->with('roles')->first(), 200);
-        }
-
-        return response($user, 200);
+        //
     }
 
     /**

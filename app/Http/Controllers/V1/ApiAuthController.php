@@ -27,7 +27,7 @@ class ApiAuthController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        // Create user
+        // Create User
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,

@@ -21,5 +21,15 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/logout',[\App\Http\Controllers\V1\ApiAuthController::class, 'logout']);
 
         Route::apiResource('users', \App\Http\Controllers\V1\UserController::class);
+
+        Route::apiResource('roles', \App\Http\Controllers\V1\RoleController::class);
+
+        Route::group(['prefix' => 'notifications'], function () {
+            Route::get('unread', [\App\Http\Controllers\V1\NotificationController::class, 'unread']);
+            Route::put('markAllAsRead', [\App\Http\Controllers\V1\NotificationController::class, 'markAllAsRead']);
+            Route::get('all', [\App\Http\Controllers\V1\NotificationController::class, 'all']);
+            Route::put('{id}/markAsRead', [\App\Http\Controllers\V1\NotificationController::class, 'markAsRead']);
+            Route::delete('{id}/delete', [\App\Http\Controllers\V1\NotificationController::class, 'destroy']);
+        });
     });
 });
