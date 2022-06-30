@@ -3,16 +3,20 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\CreateUserRoleRequest;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
+use App\Services\V1\UserRoleService;
 use Illuminate\Http\Request;
 
 class UserRoleController extends Controller
 {
-    public function __construct()
+    private UserRoleService $service;
+
+    public function __construct(UserRoleService $userRoleService)
     {
-        //
+        $this->service = $userRoleService;
     }
 
     /**
@@ -37,26 +41,24 @@ class UserRoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateUserRoleRequest $request)
     {
-        $user = User::findOrFail($request->user_id);
-        $role = Role::findOrFail($request->role_id);
-        $newRole = Role::findOrFail($request->new_role);
+        $validated = $request->validated();
 
-        if($user->is($newRole->name))
-        {
+        if (
+            UserRole::where('user_id', $validated['user_id'])->where('role_id', $validated['role_id'])->exists()
+        ) {
             return response([
                 'message' => 'User already assigned to Role'
             ], 200);
-        }else
-        {
-            $created = UserRole::insert([
-                'user_id' => $request->user_id,
-                'role_id' => $request->new_role,
-            ]);
-
-            return response($created, 201);
         }
+
+        $created = UserRole::create([
+            'user_id' => $request->user_id,
+            'role_id' => $request->role_id,
+        ]);
+
+        return response($created, 201);
     }
 
     /**

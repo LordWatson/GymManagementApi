@@ -5,21 +5,11 @@ namespace DummyNamespace;
 class DummyClass
 {
     /**
-     * Create the service.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
      * Execute the service.
      *
      * @return void
      */
-    public static function execute()
+    public static function methodName()
     {
         //
     }

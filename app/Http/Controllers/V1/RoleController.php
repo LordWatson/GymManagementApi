@@ -45,14 +45,14 @@ class RoleController extends Controller
         $validated = $request->validated();
 
         // Create Role
-        $user = Role::create(
+        $role = Role::create(
             $request->validated(),
             [
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 
-        return response($user, 201);
+        return response($role, 201);
     }
 
     /**
