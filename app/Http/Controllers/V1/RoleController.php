@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\StoreRoleRequest;
+use App\Http\Resources\V1\RoleResource;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,16 +23,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-
-        if($user->isAdmin())
-        {
-            $roles = Role::all();
-
-            return response($roles, 200);
-        }
-
-        return response('Permission Denied', 403);
+        return response(RoleResource::collection(Role::all()), 200);
     }
 
     /**
@@ -61,9 +53,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Role $role)
     {
-        //
+        return response(RoleResource::make($role), 200);
     }
 
     /**

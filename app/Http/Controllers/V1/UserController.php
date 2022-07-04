@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\UserResource;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -23,12 +24,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->isAdmin())
-        {
-            return response(User::with('roles')->get(), 200);
-        }
-
-        return response('Permission Denied', 403);
+        return response(UserResource::collection(User::all()), 200);
     }
 
     /**
@@ -50,12 +46,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if(Auth::user()->isAdmin())
-        {
-            return response($user, 200);
-        }
-
-        return response($user, 200);
+        return response(UserResource::make($user), 200);
     }
 
     /**
