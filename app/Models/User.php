@@ -71,4 +71,14 @@ class User extends Authenticatable
 
         return false;
     }
+
+    public function gymClassesAsInstructor()
+    {
+        return $this->hasMany(GymClass::class, 'instructor_id');
+    }
+
+    public function gymClassesAsAttendee()
+    {
+        return $this->belongsToMany(GymClass::class, 'gym_class_attendee');
+    }
 }

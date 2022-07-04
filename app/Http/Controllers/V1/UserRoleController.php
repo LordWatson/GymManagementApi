@@ -12,11 +12,10 @@ use Illuminate\Http\Request;
 
 class UserRoleController extends Controller
 {
-    private UserRoleService $service;
 
-    public function __construct(UserRoleService $userRoleService)
+    public function __construct()
     {
-        $this->service = $userRoleService;
+        //
     }
 
     /**
@@ -26,12 +25,7 @@ class UserRoleController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->isAdmin())
-        {
-            return response(User::with('roles')->get(), 200);
-        }
-
-        return response('Permission Denied', 403);
+        return response(User::with('roles')->get(), 200);
     }
 
     /**
@@ -69,11 +63,6 @@ class UserRoleController extends Controller
      */
     public function show(User $user)
     {
-        if(Auth::user()->isAdmin())
-        {
-            return response($user, 200);
-        }
-
         return response($user, 200);
     }
 

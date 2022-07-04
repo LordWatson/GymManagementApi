@@ -15,7 +15,7 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        $roles = ['Admin', 'Staff', 'Coach', 'Athlete'];
+        $roles = ['Admin', 'Staff', 'Coach', 'Athlete', 'Nutritionist', 'Personal Trainer'];
 
         foreach($roles as $role){
             Role::insert([

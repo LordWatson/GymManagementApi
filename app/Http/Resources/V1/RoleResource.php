@@ -17,8 +17,8 @@ class RoleResource extends JsonResource
         return [
             'id' => $this->when($request->user()->isAdmin(), $this->id),
             'name' => $this->name,
-            'created_at' => $this->when($request->user()->isAdmin(), $this->created_at),
-            'updated_at' => $this->when($request->user()->isAdmin(), $this->updated_at),
+            //'created_at' => $this->when($request->user()->isAdmin(), $this->created_at),
+            //'updated_at' => $this->when($request->user()->isAdmin(), $this->updated_at),
         ];
     }
 }

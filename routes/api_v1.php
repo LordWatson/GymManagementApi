@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::apiResource('user-roles', \App\Http\Controllers\V1\UserRoleController::class)->middleware('is-admin');
 
         Route::apiResource('gym-classes', \App\Http\Controllers\V1\GymClassController::class);
+
+        Route::apiResource('gym-class-attendees', \App\Http\Controllers\V1\GymClassAttendeeController::class);
 
         Route::group(['prefix' => 'notifications'], function () {
             Route::get('unread', [\App\Http\Controllers\V1\NotificationController::class, 'unread']);

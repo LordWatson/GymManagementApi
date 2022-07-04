@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             AdminUserSeeder::class,
             RoleSeeder::class,
+            GymClassesSeeder::class,
+            PersonalTrainerSeeder::class,
+            GymClassAttendeeSeeder::class,
         ]);
     }
 }

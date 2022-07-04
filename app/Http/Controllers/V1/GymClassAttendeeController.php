@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\UserResource;
-use App\Models\Role;
-use App\Models\User;
+use App\Models\GymClassAttendee;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Controller;
 
-class UserController extends Controller
+class GymClassAttendeeController extends Controller
 {
 
     public function __construct()
     {
         //
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return response(UserResource::collection(User::with('roles')->get()), 200);
+        //
     }
 
     /**
@@ -41,22 +37,22 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\GymClassAttendee  $gymClassAttendee
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(GymClassAttendee $gymClassAttendee)
     {
-        return response(UserResource::make($user), 200);
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\GymClassAttendee  $gymClassAttendee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, GymClassAttendee $gymClassAttendee)
     {
         //
     }
@@ -64,10 +60,10 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\GymClassAttendee  $gymClassAttendee
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(GymClassAttendee $gymClassAttendee)
     {
         //
     }
