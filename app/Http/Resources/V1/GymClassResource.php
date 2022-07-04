@@ -20,6 +20,7 @@ class GymClassResource extends JsonResource
             'name' => $this->name,
             'description' => $this->description,
             'max_attendees' => $this->max_attendees,
+            'attendees' => count($this->attendees->unique()),
             'start_date_time' => $this->start_date_time,
             'duration' => $this->duration,
             'frequency' => $this->frequency ?? 'One off',

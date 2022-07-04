@@ -31,4 +31,9 @@ class GymClass extends Model
     {
         return $this->hasOne(User::class, 'id','instructor_id');
     }
+
+    public function attendees()
+    {
+        return $this->belongsToMany(User::class, 'gym_class_attendees');
+    }
 }

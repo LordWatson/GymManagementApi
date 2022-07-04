@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\Http\Requests\V1\CreateGymClassAttendeeRequest;
 use App\Models\GymClassAttendee;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -11,7 +12,7 @@ class GymClassAttendeeController extends Controller
 
     public function __construct()
     {
-        //
+        $this->middleware('is-admin')->only(['index']);
     }
     /**
      * Display a listing of the resource.
@@ -29,9 +30,27 @@ class GymClassAttendeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateGymClassAttendeeRequest $gymClassAttendeeRequest)
     {
-        //
+        $validated = $gymClassAttendeeRequest->validated();
+
+        if(
+            GymClassAttendee::where('gym_class_id', $gymClassAttendeeRequest['gym_class_id'])
+                ->where('user_id', $gymClassAttendeeRequest['user_id'])
+                ->exists()
+        ){
+            return response([
+                'message' => 'User is already attending gym class'
+            ], 200);
+        }
+
+        $gymClassAttendee = GymClassAttendee::create([
+            'gym_class_id' => $validated['gym_class_id'],
+            'user_id' => $validated['user_id'],
+        ]);
+
+        return response($gymClassAttendee, 201);
+
     }
 
     /**

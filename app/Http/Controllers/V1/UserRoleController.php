@@ -48,8 +48,8 @@ class UserRoleController extends Controller
         }
 
         $created = UserRole::create([
-            'user_id' => $request->user_id,
-            'role_id' => $request->role_id,
+            'user_id' => $validated['user_id'],
+            'role_id' => $validated['role_id'],
         ]);
 
         return response($created, 201);

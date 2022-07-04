@@ -22,7 +22,7 @@ class GymClassController extends Controller
      */
     public function index()
     {
-        //
+        return response(GymClassResource::collection(GymClass::all()), 200);
     }
 
     /**

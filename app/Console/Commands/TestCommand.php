@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\GymClassAttendee;
 use App\Models\User;
 use Illuminate\Console\Command;
 
@@ -28,12 +29,17 @@ class TestCommand extends Command
      */
     public function handle()
     {
-        $personalTrainersArray = User::whereHas(
-            'roles', function($q){
-            $q->where('name', 'Personal Trainer');
+        $users = User::all();
+
+        foreach($users as $user)
+        {
+            // Get the row you don't want to delete.
+            $dontDeleteThisRow = GymClassAttendee::where('user_id', $user->id)->first();
+            if(isset($dontDeleteThisRow))
+            {
+                // Delete all rows except the one we fetched above.
+                GymClassAttendee::where('user_id', $user->id)->where('id', '!=', $dontDeleteThisRow->id)->delete();
+            }
         }
-        )->pluck('id')
-            ->toArray();
-        dd(count($personalTrainersArray) - 1);
     }
 }

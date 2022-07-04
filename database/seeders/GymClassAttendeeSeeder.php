@@ -32,16 +32,18 @@ class GymClassAttendeeSeeder extends Seeder
         ->pluck('id')
         ->toArray();
 
-        foreach(range(1,200) as $i){
-            $fakeDate = $faker->dateTimeBetween('-1 week', '+1 week');
+        $dateTime = date("Y-m-d H:i:s");
 
-            $gymClassAttendee = new GymClassAttendee();
-            $gymClassAttendee->gym_class_id = $gymClassesArray[$faker->numberBetween(0, count($gymClassesArray) - 1)];
-            $gymClassAttendee->user_id = $athletesArray[$faker->numberBetween(0, count($athletesArray) - 1)];
-            $gymClassAttendee->attended = $faker->boolean;
-            $gymClassAttendee->created_at = date("Y-m-d H:i:s");
-            $gymClassAttendee->updated_at = date("Y-m-d H:i:s");
-            $gymClassAttendee->save();
+        foreach(range(1,200) as $i){
+            GymClassAttendee::firstOrCreate(
+                [
+                    'gym_class_id' => $gymClassesArray[$faker->numberBetween(0, count($gymClassesArray) - 1)],
+                    'user_id' => $athletesArray[$faker->numberBetween(0, count($athletesArray) - 1)],
+                    //'attended' => $faker->boolean,
+                    'created_at' => $dateTime,
+                    'updated_at' => $dateTime,
+                ]
+            );
         }
     }
 }
