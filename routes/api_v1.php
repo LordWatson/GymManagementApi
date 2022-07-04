@@ -26,6 +26,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::apiResource('user-roles', \App\Http\Controllers\V1\UserRoleController::class)->middleware('is-admin');
 
+        Route::apiResource('gym-classes', \App\Http\Controllers\V1\GymClassController::class);
+
         Route::group(['prefix' => 'notifications'], function () {
             Route::get('unread', [\App\Http\Controllers\V1\NotificationController::class, 'unread']);
             Route::put('markAllAsRead', [\App\Http\Controllers\V1\NotificationController::class, 'markAllAsRead']);

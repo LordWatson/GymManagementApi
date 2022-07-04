@@ -43,7 +43,7 @@ class User extends Authenticatable
     ];
 
     // Eager load roles
-    protected $with = ['roles'];
+    //protected $with = ['roles'];
 
     public function roles()
     {

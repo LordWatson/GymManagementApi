@@ -4,7 +4,7 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRoleRequest extends FormRequest
+class CreateGymClassRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,12 @@ class StoreRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:roles|max:20|alpha',
+            'name' => 'required',
+            'description' => 'required|max:50',
+            'instructor_id' => 'required|exists:users,id',
+            'max_attendees' => 'integer',
+            'start_date_time' => 'required',
+            'duration' => 'required',
         ];
     }
 }

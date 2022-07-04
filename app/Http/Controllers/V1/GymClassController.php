@@ -3,19 +3,18 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\CreateRoleRequest;
-use App\Http\Resources\V1\RoleResource;
-use App\Models\Role;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\V1\GymClassResource;
+use App\Models\GymClass;
+use App\Http\Requests\V1\CreateGymClassRequest;
+use App\Http\Requests\V1\UpdateGymClassRequest;
 
-class RoleController extends Controller
+class GymClassController extends Controller
 {
+
     public function __construct()
     {
-        //
+        $this->middleware('is-admin')->except(['index', 'show']);
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -23,49 +22,49 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return response(RoleResource::collection(Role::all()), 200);
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreGymClassesRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateRoleRequest $request)
+    public function store(CreateGymClassRequest $request)
     {
         $validated = $request->validated();
 
-        // Create Role
-        $role = Role::create(
+        // Create Gym Class
+        $gymClass = GymClass::create(
             $request->validated(),
             [
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 
-        return response($role, 201);
+        return response($gymClass, 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\GymClass  $gymClass
      * @return \Illuminate\Http\Response
      */
-    public function show(Role $role)
+    public function show(GymClass $gymClass)
     {
-        return response(RoleResource::make($role), 200);
+        return response(GymClassResource::make($gymClass), 200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\UpdateGymClassesRequest  $request
+     * @param  \App\Models\GymClass  $gymClass
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateGymClassRequest $request, GymClass $gymClass)
     {
         //
     }
@@ -73,10 +72,10 @@ class RoleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\GymClass  $gymClass
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(GymClass $gymClass)
     {
         //
     }
