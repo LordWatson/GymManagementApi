@@ -40,6 +40,7 @@ class GymClassAttendeeSeeder extends Seeder
                     'gym_class_id' => $gymClassesArray[$faker->numberBetween(0, count($gymClassesArray) - 1)],
                     'user_id' => $athletesArray[$faker->numberBetween(0, count($athletesArray) - 1)],
                     //'attended' => $faker->boolean,
+                    'repeated_id' => 1,
                     'created_at' => $dateTime,
                     'updated_at' => $dateTime,
                 ]

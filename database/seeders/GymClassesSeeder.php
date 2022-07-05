@@ -44,6 +44,7 @@ class GymClassesSeeder extends Seeder
             $gymClass->instructor_id = $personalTrainersArray[$faker->numberBetween(0, count($personalTrainersArray) - 1)];
             $gymClass->created_at = $fakeDate;
             $gymClass->updated_at = $fakeDate;
+            $gymClass->repeated_id = 1;
             $gymClass->save();
         }
     }

@@ -4,15 +4,19 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Requests\V1\CreateGymClassAttendeeRequest;
 use App\Models\GymClassAttendee;
+use App\Services\V1\GymClassAttendeeService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class GymClassAttendeeController extends Controller
 {
 
-    public function __construct()
+    private GymClassAttendeeService $service;
+
+    public function __construct(GymClassAttendeeService $service)
     {
         $this->middleware('is-admin')->only(['index']);
+        $this->service = $service;
     }
     /**
      * Display a listing of the resource.
@@ -35,12 +39,18 @@ class GymClassAttendeeController extends Controller
         $validated = $gymClassAttendeeRequest->validated();
 
         if(
-            GymClassAttendee::where('gym_class_id', $gymClassAttendeeRequest['gym_class_id'])
-                ->where('user_id', $gymClassAttendeeRequest['user_id'])
-                ->exists()
+            $this->service->isUserAlreadyAttendingClass($validated['user_id'], $validated['gym_class_id'])
         ){
             return response([
                 'message' => 'User is already attending gym class'
+            ], 200);
+        }
+
+        if(
+            !$this->service->doesGymClassHaveSpace($validated['gym_class_id'])
+        ){
+            return response([
+                'message' => 'Gym class is full'
             ], 200);
         }
 
@@ -50,7 +60,6 @@ class GymClassAttendeeController extends Controller
         ]);
 
         return response($gymClassAttendee, 201);
-
     }
 
     /**
