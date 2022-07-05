@@ -32,8 +32,13 @@ class GymClass extends Model
         return $this->hasOne(User::class, 'id','instructor_id');
     }
 
-    public function attendees()
+    public function pastAttendees()
     {
         return $this->belongsToMany(User::class, 'gym_class_attendees');
+    }
+
+    public function attendees()
+    {
+        return $this->pastAttendees()->where('repeated_id', $this->repeated_id);
     }
 }
