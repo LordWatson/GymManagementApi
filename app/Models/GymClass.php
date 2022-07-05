@@ -22,6 +22,7 @@ class GymClass extends Model
         'duration',
         'instructor_id',
         'frequency',
+        'repeated_id',
     ];
 
     // Eager load instructor
@@ -37,6 +38,8 @@ class GymClass extends Model
         return $this->belongsToMany(User::class, 'gym_class_attendees');
     }
 
+    // Both GymClass and GymClassAttendee have a column 'repeated_id'. This is used to differentiate between
+    // classes the re-occur. ie weekly, monthly etc.
     public function attendees()
     {
         return $this->pastAttendees()->where('repeated_id', $this->repeated_id);

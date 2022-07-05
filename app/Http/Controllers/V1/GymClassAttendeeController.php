@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Requests\V1\CreateGymClassAttendeeRequest;
+use App\Models\GymClass;
 use App\Models\GymClassAttendee;
 use App\Services\V1\GymClassAttendeeService;
 use Illuminate\Http\Request;
@@ -54,9 +55,12 @@ class GymClassAttendeeController extends Controller
             ], 200);
         }
 
+        $gymClass = GymClass::find($validated['gym_class_id']);
+
         $gymClassAttendee = GymClassAttendee::create([
             'gym_class_id' => $validated['gym_class_id'],
             'user_id' => $validated['user_id'],
+            'repeated_id' => $gymClass->repeated_id,
         ]);
 
         return response($gymClassAttendee, 201);

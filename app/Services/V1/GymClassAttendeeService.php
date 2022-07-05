@@ -16,8 +16,11 @@ class GymClassAttendeeService
 
     public function isUserAlreadyAttendingClass($userId, $gymClassId) : bool
     {
+        $gymClass = GymClass::find($gymClassId);
+
         if(
             GymClassAttendee::where('gym_class_id', $gymClassId)
+                ->where('repeated_id', $gymClass->repeated_id)
                 ->where('user_id', $userId)
                 ->exists()
         ){
@@ -28,10 +31,13 @@ class GymClassAttendeeService
 
     public function doesGymClassHaveSpace($gymClassId) : bool
     {
+        $gymClass = GymClass::find($gymClassId);
+
         if(
-            GymClass::find($gymClassId)->max_attendees
+            $gymClass->max_attendees
             >
             GymClassAttendee::where('gym_class_id', $gymClassId)
+                ->where('repeated_id', $gymClass->repeated_id)
                 ->count()
         ){
             return true;
