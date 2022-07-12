@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\CreateUserRoleRequest;
+use App\Http\Resources\V1\UserResource;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\UserRole;
@@ -25,7 +26,7 @@ class UserRoleController extends Controller
      */
     public function index()
     {
-        return response(User::with('roles')->get(), 200);
+        return response(UserResource::collection(User::with('roles')->get()), 200);
     }
 
     /**
@@ -61,9 +62,11 @@ class UserRoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show($role)
     {
-        return response($user, 200);
+        $role = Role::find($role);
+
+        return response(UserResource::collection($role->users), 200);
     }
 
     /**
@@ -73,19 +76,27 @@ class UserRoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, UserRole $userRole)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function unassign($userId, $roleId)
     {
-        //
+        $userRole = UserRole::where('user_id', $userId)->where('role_id', $roleId)->first();
+
+        if (!$userRole)
+        {
+            return response([
+                'message' => 'User is not assigned to the role you are trying to unassign'
+            ], 404);
+        }
+
+        $userRole->delete();
+        $role = Role::find($roleId);
+
+        return response([
+            'message' => 'User unassigned from ' . $role->name . ' role',
+        ], 200);
     }
 }

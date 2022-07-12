@@ -25,7 +25,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::apiResource('roles', \App\Http\Controllers\V1\RoleController::class)->middleware('is-admin');
 
-        Route::apiResource('user-roles', \App\Http\Controllers\V1\UserRoleController::class)->middleware('is-admin');
+        Route::apiResource('user-roles', \App\Http\Controllers\V1\UserRoleController::class)->except(['destroy'])->middleware('is-admin');
+        Route::delete('user-roles/unassign/{userId}/{roleId}', [\App\Http\Controllers\V1\UserRoleController::class, 'unassign'])->middleware('is-admin');
 
         Route::apiResource('gym-classes', \App\Http\Controllers\V1\GymClassController::class);
 
@@ -33,9 +34,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::group(['prefix' => 'notifications'], function () {
             Route::get('unread', [\App\Http\Controllers\V1\NotificationController::class, 'unread']);
-            Route::put('markAllAsRead', [\App\Http\Controllers\V1\NotificationController::class, 'markAllAsRead']);
+            Route::put('mark-all-as-read', [\App\Http\Controllers\V1\NotificationController::class, 'markAllAsRead']);
             Route::get('all', [\App\Http\Controllers\V1\NotificationController::class, 'all']);
-            Route::put('{id}/markAsRead', [\App\Http\Controllers\V1\NotificationController::class, 'markAsRead']);
+            Route::put('{id}/mark-as-read', [\App\Http\Controllers\V1\NotificationController::class, 'markAsRead']);
             Route::delete('{id}/delete', [\App\Http\Controllers\V1\NotificationController::class, 'destroy']);
         });
     });
