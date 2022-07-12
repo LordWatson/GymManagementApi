@@ -8,6 +8,7 @@ use App\Http\Resources\V1\RoleResource;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class RoleController extends Controller
 {
@@ -32,17 +33,22 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateRoleRequest $request)
+    public function store(Request $request)
     {
-        $validated = $request->validated();
+        $raw = Validator::make($request->all(), [
+            'name' => 'required|unique:roles,name|max:30'
+        ]);
+
+        $validated = $raw->validated();
 
         // Create Role
         $role = Role::create(
-            $request->validated(),
+            $validated,
             [
                 'created_at' => date('Y-m-d H:i:s'),
                 'updated_at' => date('Y-m-d H:i:s')
-            ]);
+            ]
+        );
 
         return response($role, 201);
     }
@@ -67,7 +73,17 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $raw = Validator::make($request->all(), [
+           'name' => 'unique:roles,name|max:30'
+        ]);
+
+        $validated = $raw->validated();
+
+        // update returns a bool, 'tap' returns Model - https://medium.com/@taylorotwell/tap-tap-tap-1fc6fc1f93a6
+        $updatedRole = tap(Role::find($id))
+            ->update($validated);
+
+        return response(RoleResource::make($updatedRole), 200);
     }
 
     /**
@@ -78,6 +94,19 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $role = Role::find($id);
+
+        if(!$role)
+        {
+            return response([
+                'message' => 'Role does not exist',
+            ], 404);
+        }
+
+        $role->delete();
+
+        return response([
+            'message' => 'Role deleted successfully',
+        ], 200);
     }
 }
