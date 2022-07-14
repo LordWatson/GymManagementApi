@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +25,7 @@ class GymClassResource extends JsonResource
             'start_date_time' => $this->start_date_time,
             'duration' => $this->duration,
             'frequency' => $this->frequency ?? 'One off',
-            'instructor_id' => UserResource::make($this->instructor),
+            'instructor_id' => UserResource::make(User::find($this->instructor_id)),
             'created_at' => $this->when($request->user()->isAdmin(), $this->created_at),
             'updated_at' => $this->when($request->user()->isAdmin(), $this->updated_at),
         ];

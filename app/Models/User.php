@@ -72,6 +72,17 @@ class User extends Authenticatable
         return false;
     }
 
+    public function canInstructGymClass()
+    {
+        foreach ($this->roles()->get() as $role) {
+            if (in_array($role->name, ['Admin', 'Coach', 'Nutritionist', 'Personal Trainer / Instructor'])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function gymClassesAsInstructor()
     {
         return $this->hasMany(GymClass::class, 'instructor_id');

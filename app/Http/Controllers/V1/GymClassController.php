@@ -43,7 +43,7 @@ class GymClassController extends Controller
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
 
-        return response($gymClass, 201);
+        return response(GymClassResource::make($gymClass), 201);
     }
 
     /**
@@ -66,7 +66,13 @@ class GymClassController extends Controller
      */
     public function update(UpdateGymClassRequest $request, GymClass $gymClass)
     {
-        //
+        $validated = $request->validated();
+
+        // update returns a bool, 'tap' returns Model - https://medium.com/@taylorotwell/tap-tap-tap-1fc6fc1f93a6
+        $updatedGymClass = tap($gymClass)
+            ->update($validated);
+
+        return response(GymClassResource::make($updatedGymClass), 200);
     }
 
     /**
@@ -75,8 +81,21 @@ class GymClassController extends Controller
      * @param  \App\Models\GymClass  $gymClass
      * @return \Illuminate\Http\Response
      */
-    public function destroy(GymClass $gymClass)
+    public function destroy($gymClass)
     {
-        //
+        $gymClass = GymClass::find($gymClass);
+
+        if(!$gymClass)
+        {
+            return response([
+                'message' => 'Gym Class does not exist',
+            ], 404);
+        }
+
+        $gymClass->delete();
+
+        return response([
+            'message' => 'Gym Class deleted successfully',
+        ], 200);
     }
 }
