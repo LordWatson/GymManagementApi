@@ -11,7 +11,7 @@ namespace App\Rules\V1;
 use App\Models\User;
 use Illuminate\Contracts\Validation\Rule;
 
-class GymClassInstructorIsQualified implements Rule
+class GymClassInstructorIsQualifiedRule implements Rule
 {
     /**
      * Create a new rule instance.

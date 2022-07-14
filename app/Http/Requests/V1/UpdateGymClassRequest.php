@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\V1;
 
-use App\Rules\V1\GymClassInstructorIsQualified;
+use App\Rules\V1\GymClassInstructorIsQualifiedRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateGymClassRequest extends FormRequest
@@ -27,7 +27,7 @@ class UpdateGymClassRequest extends FormRequest
         return [
             'name' => 'unique:gym_classes,name|max:20',
             'description' => 'max:50',
-            'instructor_id' => new GymClassInstructorIsQualified(),
+            'instructor_id' => new GymClassInstructorIsQualifiedRule(),
             'max_attendees' => 'integer',
         ];
     }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\V1;
 
-use App\Rules\V1\GymClassInstructorIsQualified;
+use App\Rules\V1\GymClassInstructorIsQualifiedRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateGymClassRequest extends FormRequest
@@ -30,7 +30,7 @@ class CreateGymClassRequest extends FormRequest
             'instructor_id' => [
                 'required',
                 'exists:users,id',
-                new GymClassInstructorIsQualified(),
+                new GymClassInstructorIsQualifiedRule(),
             ],
             'max_attendees' => 'integer',
             'start_date_time' => 'required',
